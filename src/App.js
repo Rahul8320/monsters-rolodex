@@ -28,6 +28,8 @@ function App() {
 
   return (
     <main className="App">
+      <h1 className="app-title">Monster Rolodex</h1>
+
       <SearchBox
         placeholder="Search Monsters"
         classNames="search-box"
