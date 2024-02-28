@@ -1,22 +1,42 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [counter, setCounter] = useState(26);
+  const [monsters, setMonsters] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+
+  const fetchMonstersData = async () => {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    const result = await response.json();
+    setMonsters(result);
+  };
+
+  useEffect(() => {
+    fetchMonstersData();
+  }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-
-        <h2>Current Count: {counter}</h2>
-
-        <button onClick={() => setCounter((prev) => prev + 5)}>
-          Update Counter
-        </button>
-      </header>
-    </div>
+    <main className="App">
+      <section>
+        <input
+          type="search"
+          placeholder="search monsters"
+          className="search-box"
+          onChange={(e) => setSearchKey(e.target.value)}
+        />
+      </section>
+      <section>
+        {monsters
+          .filter((u) => u.name.toLowerCase().includes(searchKey.toLowerCase()))
+          .map((monster) => {
+            return (
+              <div key={monster.id}>
+                <h1>{monster.name}</h1>
+              </div>
+            );
+          })}
+      </section>
+    </main>
   );
 }
 
